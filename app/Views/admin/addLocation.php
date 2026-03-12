@@ -48,7 +48,7 @@
         <div class="p-8">
             <div class="max-w-4xl mx-auto">
                 <nav class="text-sm text-gray-500 mb-4">
-                    <a href="<?= base_url('dashboard/location') ?>" class="hover:text-blue-600 transition">Location</a> 
+                    <a href="<?= base_url('location') ?>" class="hover:text-blue-600 transition">Location</a> 
                     <span class="mx-2">/</span> 
                     <span class="text-gray-800 font-medium">Add New Location</span>
                 </nav>
@@ -72,23 +72,27 @@
                                 <label for="location_code" class="block text-sm font-semibold text-gray-700 mb-2">Location Code</label>
                                 <input type="text" name="location_code" id="location_code" value="<?= old('location_code') ?>"
                                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                                    placeholder="AB1-RM4" required>
+                                    placeholder="SHSB1-CL1" required>
                             </div>
 
                             <div>
                                 <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Location Name</label>
                                 <input type="text" name="name" id="name" value="<?= old('name') ?>"
                                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                                    placeholder="Academic Building 1 Room 4" required>
+                                    placeholder="Computer Laboratory 1" required>
                             </div>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-1 gap-6 mb-8">
                             <div>
                                 <label for="building" class="block text-sm font-semibold text-gray-700 mb-2">Building</label>
-                                <input type="text" name="building" id="building" value="<?= old('building') ?>"
-                                    class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                                    placeholder="Academic Building 1" required>
+                                <select name="building" id="building" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition" required>
+                                    <option value="SHS Building 1">SHS Building 1</option>
+                                    <option value="SHS Building 1">SHS Building 2</option>
+                                    <option value="SHS Building 1">SHS Building 3</option>
+                                    <option value="SHS Building 1">SHS Building 4</option>
+                                    <option value="SHS Building 1">SHS Building 5</option>
+                                </select>
                             </div>
                         </div>
 

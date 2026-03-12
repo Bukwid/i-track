@@ -48,7 +48,7 @@
         <div class="p-8">
             <div class="max-w-4xl mx-auto">
                 <nav class="text-sm text-gray-500 mb-4">
-                    <a href="<?= base_url('dashboard/faculty') ?>" class="hover:text-blue-600 transition">Faculty</a> 
+                    <a href="<?= base_url('faculty') ?>" class="hover:text-blue-600 transition">Faculty</a> 
                     <span class="mx-2">/</span> 
                     <span class="text-gray-800 font-medium">Add New Faculty</span>
                 </nav>
