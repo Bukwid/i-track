@@ -9,7 +9,7 @@
 </head>
 <body class="bg-gray-50 flex h-screen overflow-hidden">
 
-    <aside class="w-64 bg-blue-600 text-white flex flex-col">
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-64 transform -translate-x-full md:translate-x-0 md:static md:flex flex-col bg-blue-600 text-white transition-transform duration-300 ease-in-out">
         <div class="p-6 text-2xl font-bold border-b border-blue-700">
             I-Track
         </div>
@@ -29,10 +29,17 @@
         </div>
     </aside>
 
-    <main class="flex-1 flex flex-col overflow-y-auto">
+    <main class="flex-1 flex flex-col overflow-y-auto md:ml-64">
         
-        <header class="bg-white shadow-sm px-8 py-4 flex justify-between items-center">
-            <h2 class="text-xl font-semibold text-gray-800"><?= $page ?> Overview</h2>
+        <header class="bg-white shadow-sm px-6 sm:px-8 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <button id="sidebarToggle" aria-label="Toggle menu" class="md:hidden p-2 flex flex-col gap-1 items-center justify-center w-10 h-10 bg-blue-600 rounded">
+                    <span id="bar1" class="block w-6 h-0.5 bg-white transition-transform duration-300 origin-center"></span>
+                    <span id="bar2" class="block w-6 h-0.5 bg-white transition-opacity duration-300"></span>
+                    <span id="bar3" class="block w-6 h-0.5 bg-white transition-transform duration-300 origin-center"></span>
+                </button>
+                <h2 class="text-xl font-semibold text-gray-800"><?= $page ?> Overview</h2>
+            </div>
             <div class="flex items-center space-x-4">
                 <span class="text-sm text-gray-500">Bula National High School</span>
                 <div class="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs"></div>
@@ -55,7 +62,8 @@
                     <h3 class="font-bold text-gray-700"><?= esc($faculty['first_name'] . ' ' . $faculty['last_name']) ?>'s Schedule</h3>
                     <a href="<?= base_url('faculty/addSchedule/' . $faculty['faculty_id']) ?>" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700">+ Add Schedule</a>
                 </div>
-                <table class="w-full text-left">
+                <div class="overflow-x-auto">
+                <table class="min-w-full text-left">
                     <thead class="bg-gray-50 text-gray-600 text-sm">
                         <tr>
                             <th class="p-4 font-semibold">Day of Week</th>
@@ -75,7 +83,11 @@
                                     <td class="p-4 text-gray-600"><?= esc($schedule['end_time']) ?></td>
                                     <td class="p-4 text-gray-600"><?= esc($schedule['subject_name']) ?></td>
                                     <td class="p-4 text-gray-600"><?= esc($schedule['location_name'] . ' - ' . $schedule['building']) ?></td>
-                                    <td><a href="<?= base_url('faculty/deleteSchedule/' . $schedule['schedule_id']) ?>" class="bg-red-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-700">Delete</a></td>
+                                    <td class="p-4">
+                                        <div class="flex flex-col md:flex-row gap-2">
+                                            <a href="<?= base_url('faculty/deleteSchedule/' . $schedule['schedule_id']) ?>" class="bg-red-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-700">Delete</a>
+                                        </div>
+                                    </td>
                                 </tr>
                             <?php endforeach; ?>
                         <?php else: ?>
@@ -85,6 +97,7 @@
                         <?php endif; ?>
                     </tbody>
                 </table>
+                </div>
             </div>
         </div>
 

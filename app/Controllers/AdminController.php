@@ -99,10 +99,12 @@ class AdminController extends BaseController
 
     public function addLocation()
     {
-        $checkname = $this->locationModel->where('name', $this->request->getPost('name'))->first();
+        $checkname = $this->locationModel->where('name', $this->request->getPost('name'))
+                                         ->where('building', $this->request->getPost('building'))
+                                         ->first();
         $checkCode = $this->locationModel->where('location_code', strtoupper($this->request->getPost('location_code')))->first();
         if($checkname || $checkCode) {
-            return redirect()->back()->withInput()->with('error', 'Location name or code already exists. Please choose a different one.');
+            return redirect()->back()->withInput()->with('error', 'Location name in that building or code already exists. Please choose a different one.');
         }
         $data = [
             'location_code' => strtoupper($this->request->getPost('location_code')),
