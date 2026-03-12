@@ -99,12 +99,16 @@ class AdminController extends BaseController
 
     public function addLocation()
     {
+        $checkCode = $this->locationModel->where('location_code', strtoupper($this->request->getPost('location_code')))->first();
+        if($checkCode) {
+            return redirect()->back()->withInput()->with('error', 'Location code "' . esc($this->request->getPost('location_code')) . '" already exists. Please use a different code.');
+        }
+
         $checkname = $this->locationModel->where('name', $this->request->getPost('name'))
                                          ->where('building', $this->request->getPost('building'))
                                          ->first();
-        $checkCode = $this->locationModel->where('location_code', strtoupper($this->request->getPost('location_code')))->first();
-        if($checkname || $checkCode) {
-            return redirect()->back()->withInput()->with('error', 'Location name in that building or code already exists. Please choose a different one.');
+        if($checkname) {
+            return redirect()->back()->withInput()->with('error', 'A room named "' . esc($this->request->getPost('name')) . '" already exists in ' . esc($this->request->getPost('building')) . '. Please choose a different name.');
         }
         $data = [
             'location_code' => strtoupper($this->request->getPost('location_code')),
@@ -228,5 +232,65 @@ class AdminController extends BaseController
         } else {
             return redirect()->back()->with('error', 'Failed to delete schedule. Please try again.');
         }
+    }
+
+    public function settingsPage()
+    {
+        $adminId = session()->get('faculty_id');
+        $admin = $this->facultyModel->find($adminId);
+
+        return view('admin/settings', [
+            'page' => 'Settings',
+            'admin' => $admin,
+        ]);
+    }
+
+    public function updateUsername()
+    {
+        $adminId = session()->get('faculty_id');
+        $admin = $this->facultyModel->find($adminId);
+
+        $newUsername = $this->request->getPost('new_username');
+
+        if (empty($newUsername)) {
+            return redirect()->back()->with('error', 'Username cannot be empty.');
+        }
+
+        if ($newUsername === $admin['username']) {
+            return redirect()->back()->with('error', 'New username is the same as the current one.');
+        }
+
+        $existing = $this->facultyModel->where('username', $newUsername)->where('faculty_id !=', $adminId)->first();
+        if ($existing) {
+            return redirect()->back()->withInput()->with('error', 'That username is already taken. Please choose a different one.');
+        }
+
+        $this->facultyModel->update($adminId, ['username' => $newUsername]);
+        return redirect()->to('/settings')->with('success', 'Username updated successfully.');
+    }
+
+    public function updatePassword()
+    {
+        $adminId = session()->get('faculty_id');
+        $admin = $this->facultyModel->find($adminId);
+
+        $currentPassword = $this->request->getPost('current_password');
+        $newPassword = $this->request->getPost('new_password');
+        $confirmPassword = $this->request->getPost('confirm_password');
+
+        if (!password_verify($currentPassword, $admin['password'])) {
+            return redirect()->back()->with('error', 'Current password is incorrect.');
+        }
+
+        if ($newPassword !== $confirmPassword) {
+            return redirect()->back()->with('error', 'New password and confirmation do not match.');
+        }
+
+        if (strlen($newPassword) < 6) {
+            return redirect()->back()->with('error', 'New password must be at least 6 characters.');
+        }
+
+        $this->facultyModel->update($adminId, ['password' => password_hash($newPassword, PASSWORD_DEFAULT)]);
+        return redirect()->to('/settings')->with('success', 'Password updated successfully.');
     }
 }

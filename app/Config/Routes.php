@@ -28,3 +28,7 @@ $routes->get('/location/add', 'AdminController::addLocationPage');
 $routes->post('/location/add', 'AdminController::addLocation');
 $routes->get('/location/delete/(:num)', 'AdminController::deleteLocation/$1');
 $routes->get('/location/get-qrcode/(:num)', 'AdminController::getLocationQRCode/$1');
+
+$routes->get('/settings', 'AdminController::settingsPage');
+$routes->post('/settings/username', 'AdminController::updateUsername');
+$routes->post('/settings/password', 'AdminController::updatePassword');
